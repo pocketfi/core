@@ -3,11 +3,11 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import morgan from 'morgan';
 import config from './config';
-
-// routes
 import authRoutes from './routes/api/auth';
 import registerRoutes from './routes/api/register';
-const connectionString = config.ATLAS_URI;
+
+export const authRoute = '/api/auth/';
+export const registerRoute = '/api/register/';
 
 const app = express();
 
@@ -16,7 +16,7 @@ app.use(morgan('dev'));
 app.use(express.json());
 
 mongoose
-    .connect(connectionString, {
+    .connect(config.ATLAS_URI, {
         useNewUrlParser: true,
         useCreateIndex: true,
         useUnifiedTopology: true
@@ -24,7 +24,7 @@ mongoose
     .then(() => console.log('MongoDB Connected...'))
     .catch(err => console.log(err));
 
-app.use('/api/register', registerRoutes);
-app.use('/api/auth', authRoutes);
+app.use(registerRoute, registerRoutes);
+app.use(authRoute, authRoutes);
 
 export default app;

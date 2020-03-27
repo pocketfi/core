@@ -6,7 +6,7 @@
   "scripts": {
     "start": "tsc && node ./dist/server.js",
     "build": "tsc",
-    "test": "jasmine --config=jasmine.json"
+    "test": "ts-node node_modules/jasmine/bin/jasmine --config=jasmine.json"
   },
   "author": "Mileshko Alesia",
   "license": "ISC",
@@ -30,11 +30,12 @@
     "should": "^13.2.3"
   },
   "devDependencies": {
-    "jasmine": "^3.5.0",
     "@types/jasmine": "^3.5.9",
     "@types/node": "^13.9.2",
+    "@types/supertest": "^2.0.8",
     "eslint": "^6.8.0",
     "eslint-plugin-import": "^2.20.1",
+    "jasmine": "^3.5.0",
     "nodemon": "^2.0.2",
     "supertest": "^4.0.2",
     "ts-node": "^8.7.0",

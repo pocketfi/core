@@ -17,7 +17,7 @@ router.post('/', (req, res) => {
         if (!user) return res.status(400).json({msg: 'User does not exist'});
 
         bcrypt.compare(password, user.password).then(isMatch => {
-            if (!isMatch) return res.status(400).json({msg: 'Invalid credentials'})
+            if (!isMatch) return res.status(400).json({msg: 'Invalid credentials'});
 
             jwt.sign(
                 {id: user.id},
