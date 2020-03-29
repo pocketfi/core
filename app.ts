@@ -5,9 +5,11 @@ import morgan from 'morgan';
 import config from './config';
 import authRoutes from './routes/api/auth';
 import registerRoutes from './routes/api/register';
+import userRoutes from './routes/api/user';
 
 export const authRoute = '/api/auth/';
 export const registerRoute = '/api/register/';
+export const userRoute = '/api/user/';
 
 const app = express();
 
@@ -26,5 +28,6 @@ mongoose
 
 app.use(registerRoute, registerRoutes);
 app.use(authRoute, authRoutes);
+app.use(userRoute, userRoutes);
 
 export default app;
