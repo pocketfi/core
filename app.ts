@@ -18,7 +18,7 @@ app.use(morgan('dev'));
 app.use(express.json());
 
 mongoose
-    .connect(config.ATLAS_URI, {
+    .connect(config.MONGO_URI, {
         useNewUrlParser: true,
         useCreateIndex: true,
         useUnifiedTopology: true

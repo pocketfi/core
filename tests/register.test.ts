@@ -24,7 +24,7 @@ describe('registration test', () => {
 	});
 
 	it('should use test database', () => {
-		expect(config.ATLAS_URI).toBe(process.env.ATLAS_URI_TEST);
+		expect(config.MONGO_URI).toBe(process.env.MONGO_URI_TEST);
 	});
 
 	it('should register user', done => {
