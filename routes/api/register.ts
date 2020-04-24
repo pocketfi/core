@@ -28,15 +28,15 @@ router.post('/', (req, res) => {
         newUser.password = hash;
         newUser.save()
           .then(user => {
-            const token = tokenGeneration(user.id)
-                res.json({
-                  token,
-                  user: {
-                    id: user.id,
-                    name: user.name,
-                    email: user.email
-                  }
-                });
+            const token = tokenGeneration(user.id);
+            res.json({
+              token,
+              user: {
+                id: user.id,
+                name: user.name,
+                email: user.email
+              }
+            });
           }).catch(err => {
           res.status(400).json({err: err});
         });

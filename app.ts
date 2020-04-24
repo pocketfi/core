@@ -6,10 +6,12 @@ import config from './config';
 import authRoutes from './routes/api/auth';
 import registerRoutes from './routes/api/register';
 import userRoutes from './routes/api/user';
+import transactionRoutes from './routes/api/transaction';
 
 export const authRoute = '/api/auth/';
 export const registerRoute = '/api/register/';
 export const userRoute = '/api/user/';
+export const transactionRoute = '/api/transaction/';
 
 const app = express();
 
@@ -29,5 +31,6 @@ mongoose
 app.use(registerRoute, registerRoutes);
 app.use(authRoute, authRoutes);
 app.use(userRoute, userRoutes);
+app.use(transactionRoute, transactionRoutes);
 
 export default app;
