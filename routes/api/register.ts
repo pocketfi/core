@@ -1,7 +1,7 @@
 import {Router} from 'express';
 import bcrypt from 'bcryptjs';
 import User from '../../models/User';
-import {tokenGeneration} from "../../utils/tokenGeneration";
+import {generateToken} from "../../utils/generateToken";
 
 const router = Router();
 
@@ -28,7 +28,7 @@ router.post('/', (req, res) => {
         newUser.password = hash;
         newUser.save()
           .then(user => {
-            const token = tokenGeneration(user.id);
+            const token = generateToken(user.id);
             res.json({
               token,
               user: {

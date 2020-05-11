@@ -2,7 +2,7 @@ import {Router} from 'express';
 import bcrypt from 'bcryptjs';
 import User from '../../models/User';
 import {google} from "googleapis";
-import {tokenGeneration} from "../../utils/tokenGeneration";
+import {generateToken} from "../../utils/generateToken";
 
 const router = Router();
 
@@ -18,7 +18,7 @@ router.post('/', (req, res) => {
 
     bcrypt.compare(password, user.password).then(isMatch => {
       if (!isMatch) return res.status(400).json({msg: 'Invalid credentials'});
-      const token = tokenGeneration(user.id);
+      const token = generateToken(user.id);
       res.json({
         token,
         user: {
@@ -54,7 +54,7 @@ router.post('/google', (req, resp) => {
           user.save();
         }
 
-        const token = tokenGeneration(user.id);
+        const token = generateToken(user.id);
         resp.json({
           token,
           user: {

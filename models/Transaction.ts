@@ -26,7 +26,7 @@ const TransactionSchema = new Schema({
     type: String,
     required: true
   },
-  register_date: {
+  created: {
     type: Date,
     default: Date.now
   }

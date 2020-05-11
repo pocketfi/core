@@ -7,5 +7,6 @@ export interface Transaction extends Document {
   category: Category,
   place: string,
   price: number,
-  currency: string
+  currency: string,
+  created: Date
 }
