@@ -19,13 +19,12 @@ router.post('/new', auth, (req, res) => {
       .then(transactionCategory => {
         if (transactionCategory) {
           return transactionCategory._id;
-        }
-        else {
+        } else if (category) {
           const enumValues = Object.keys(CategoryColor)
             .map(n => Number.parseInt(n))
-          const randomIndex = Math.floor(Math.random() * enumValues.length)
+          const randomIndex = Math.floor(Math.random() * enumValues.length / 2)
           const randomEnumValue = enumValues[randomIndex]
-          return new Category({name: category, user: userId}).save()
+          return new Category({name: category, user: userId, color: CategoryColor[randomEnumValue].toString()}).save()
             .then(category => {
               return category._id;
             })
@@ -56,7 +55,7 @@ router.get('/get', auth, ((req, res) => {
   Transaction.find({
     user: user.id,
     created: {$lt: new Date(), $gt: new Date(year, month)}
-  }).then(transactions => {
+  }).populate('category').then(transactions => {
     res.json(transactions);
   }).catch(err => {
     console.error(err);

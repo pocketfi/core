@@ -5,7 +5,8 @@ import * as mongoose from "mongoose";
 const TransactionSchema = new Schema({
   user:{
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'user'
+    ref: 'user',
+    required: true
   },
   transactionType: {
     type: String,
