@@ -4,12 +4,12 @@ import Category from "../../models/Category";
 import auth from "../../middleware/auth";
 import User from "../../models/User";
 import {CategoryColor} from "../../types/enums/CategoryColor";
-
+import socket from '../../webSocketServer'
+import {ITransaction} from "../../types/interfaces/ITransaction";
 const router = Router();
 
 router.post('/new', auth, (req, res) => {
   const {transactionType, category, place, price, currency, user} = req.body;
-
   User.findById(user.id)
     .then(user => {
       if (!user) res.status(400).json({err: 'user does not exist'});
@@ -26,7 +26,7 @@ router.post('/new', auth, (req, res) => {
           const randomEnumValue = enumValues[randomIndex]
           return new Category({name: category, user: userId, color: CategoryColor[randomEnumValue].toString()}).save()
             .then(category => {
-              return category._id;
+              return category;
             })
         }
       }).then(category => {
@@ -39,10 +39,12 @@ router.post('/new', auth, (req, res) => {
         currency
       });
 
-      newTransaction.save((err, transaction) => {
+      newTransaction.save((err: any, transaction: ITransaction) => {
         if (err) res.status(400).json({err: err});
-        res.json(transaction);
+        res.status(200);
       })
+
+      socket.emit('new', newTransaction);
     });
   });
 });
@@ -55,9 +57,9 @@ router.get('/get', auth, ((req, res) => {
   Transaction.find({
     user: user.id,
     created: {$lt: new Date(), $gt: new Date(year, month)}
-  }).populate('category').then(transactions => {
+  }).populate('category').then((transactions: ITransaction[]) => {
     res.json(transactions);
-  }).catch(err => {
+  }).catch((err: any) => {
     console.error(err);
   })
 }))
