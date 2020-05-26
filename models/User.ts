@@ -17,6 +17,12 @@ const UserSchema = new Schema({
     register_date: {
         type: Date,
         default: Date.now
+    },
+    resetPasswordToken: {
+        type: String,
+    },
+    resetPasswordExpires:{
+        type: Date,
     }
 });
 
