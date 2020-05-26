@@ -1,11 +1,13 @@
 import {Document} from 'mongoose';
-import {Category} from "./Category";
+import {ICategory} from "./ICategory";
 
 export interface ITransaction extends Document {
+  id: string,
   transactionType: string,
-  category: Category,
+  category: ICategory,
   place: string,
   price: number,
   currency: string,
-  created: Date
+  created: Date,
+  description: string
 }
