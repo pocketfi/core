@@ -32,7 +32,7 @@ mongoose
         useUnifiedTopology: true,
         useFindAndModify: false,
     })
-    .then(() => console.log('MongoDB Connected...'))
+    .then(() => console.log(`MongoDB Connected on ${config.MONGO_URI}`))
     .catch(err => console.log(err));
 
 app.use(registerRoute, registerRoutes);

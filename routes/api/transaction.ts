@@ -62,6 +62,8 @@ router.get('/get', auth, (req, res) => {
   Transaction.find({
     user: user.id,
     created: {$lt: new Date(), $gt: new Date(year, month)}
+  }).sort({
+    created: 1
   }).populate('category').then((transactions: ITransaction[]) => {
     res.status(200).json(transactions);
   }).catch((err: any) => {
@@ -94,7 +96,6 @@ router.post('/update', auth, (req, res) => {
           })
       }
     }).then((category: ICategory) => {
-
     if (category) {
       category.name = transaction.category.name;
       category.color = transaction.category.color;
@@ -102,7 +103,6 @@ router.post('/update', auth, (req, res) => {
 
     category.save((err: any, category: ICategory) => {
       if (err) res.status(500);
-
       Transaction.findOneAndUpdate({"_id": transaction.id},
         {
           transactionType: transaction.transactionType,
@@ -112,9 +112,13 @@ router.post('/update', auth, (req, res) => {
           currency: transaction.currency,
           created: transaction.created,
           description: transaction.description
-        }, {new: true}).then((transaction: ITransaction) => {
-        if (transaction) res.status(200).json(transaction)
-        else res.status(500)
+        }, {new: true}).then((transaction) => {
+        if (transaction) {
+          transaction.category = category;
+          res.status(200).json(transaction);
+        } else {
+          res.status(500);
+        }
       });
     })
   })
