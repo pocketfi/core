@@ -7,7 +7,7 @@ export default (req: any, res: any, next: any) => {
   const token = req.header('x-auth-token');
 
   if (!token)
-    return res.status(401).json({msg: 'No token, authorizaton denied'});
+    return res.status(401).json({msg: 'No token, authorization denied'});
 
   try {
     const decoded = jwt.verify(token, JWT_SECRET);
