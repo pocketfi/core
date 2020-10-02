@@ -67,7 +67,16 @@ describe('transactions test', () => {
       .post('/api/transaction/new')
       .set('x-auth-token', token)
       .send({transaction})
-      .expect(200, done)
+      .expect(200)
+      .end((err, res) => {
+        expect(res.body.id).toEqual(jasmine.any(String));
+        expect(res.body.transactionType).toEqual(transaction.transactionType);
+        expect(res.body.currency).toEqual(transaction.currency);
+        expect(res.body.category.name).toEqual(transaction.category);
+        expect(res.body.place).toEqual(transaction.place);
+        expect(res.body.price).toEqual(transaction.price);
+        done();
+      });
   });
 
   it('should not create new transaction without token', done => {
