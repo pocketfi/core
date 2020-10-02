@@ -22,7 +22,6 @@ router.post('/new', auth, (req, res) => {
             const enumValues = Object.keys(CategoryColor).map(n => Number.parseInt(n))
             const randomIndex = Math.floor(Math.random() * enumValues.length / 2)
             const randomEnumValue = enumValues[randomIndex]
-
             return new Category({
               name: transaction.category ? transaction.category : 'Other',
               user: user._id,
@@ -30,7 +29,7 @@ router.post('/new', auth, (req, res) => {
             }).save().then(category => {
               return category;
             })
-          }
+          } else return transactionCategory
         }).then(category => {
 
         const newTransaction = new Transaction({
