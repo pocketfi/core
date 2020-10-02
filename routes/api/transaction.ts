@@ -12,46 +12,42 @@ const router = Router();
 
 router.post('/new', auth, (req, res) => {
   const {transaction, user} = req.body;
+
   User.findById(user.id)
     .then(user => {
       if (!user) res.status(400).json({err: 'user does not exist'});
-      return user._id
-    }).then(userId => {
-    Category.findOne({name: transaction.category, user: userId})
-      .then(transactionCategory => {
-        if (transactionCategory) {
-          return transactionCategory._id;
-        } else if (transaction.category) {
-          const enumValues = Object.keys(CategoryColor)
-            .map(n => Number.parseInt(n))
-          const randomIndex = Math.floor(Math.random() * enumValues.length / 2)
-          const randomEnumValue = enumValues[randomIndex]
-          return new Category({
-            name: transaction.category,
-            user: userId,
-            color: CategoryColor[randomEnumValue].toString()
-          }).save()
-            .then(category => {
+      Category.findOne({name: transaction.category ? transaction.category : 'Other', user: user._id})
+        .then(transactionCategory => {
+          if (!transactionCategory) {
+            const enumValues = Object.keys(CategoryColor).map(n => Number.parseInt(n))
+            const randomIndex = Math.floor(Math.random() * enumValues.length / 2)
+            const randomEnumValue = enumValues[randomIndex]
+            return new Category({
+              name: transaction.category ? transaction.category : 'Other',
+              user: user._id,
+              color: CategoryColor[randomEnumValue].toString()
+            }).save().then(category => {
               return category;
             })
-        }
-      }).then(category => {
-      const newTransaction = new Transaction({
-        user: userId,
-        transactionType: transaction.transactionType,
-        category,
-        place: transaction.place,
-        price: transaction.price,
-        currency: transaction.currency
-      });
+          } else return transactionCategory
+        }).then(category => {
 
-      newTransaction.save().then((transaction: ITransaction) => {
-        if (!transaction) res.status(400);
-        socket.emit('new', newTransaction);
-        res.status(200);
-      })
+        const newTransaction = new Transaction({
+          user: user._id,
+          transactionType: transaction.transactionType,
+          category,
+          place: transaction.place,
+          price: transaction.price,
+          currency: transaction.currency
+        });
+
+        newTransaction.save().then((transaction: ITransaction) => {
+          if (!transaction) res.status(400);
+          socket.emit('new', newTransaction);
+          res.json(transaction);
+        })
+      });
     });
-  });
 });
 
 router.get('/get', auth, (req, res) => {
