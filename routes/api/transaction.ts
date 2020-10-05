@@ -7,6 +7,7 @@ import {CategoryColor} from "../../types/enums/CategoryColor";
 import socket from '../../webSocketServer'
 import {ITransaction} from "../../types/interfaces/ITransaction";
 import {ICategory} from "../../types/interfaces/ICategory";
+import {generateRandomColor} from "../../utils/generateRandomColor";
 
 const router = Router();
 
@@ -19,13 +20,10 @@ router.post('/new', auth, (req, res) => {
       Category.findOne({name: transaction.category ? transaction.category : 'Other', user: user._id})
         .then(transactionCategory => {
           if (!transactionCategory) {
-            const enumValues = Object.keys(CategoryColor).map(n => Number.parseInt(n))
-            const randomIndex = Math.floor(Math.random() * enumValues.length / 2)
-            const randomEnumValue = enumValues[randomIndex]
             return new Category({
               name: transaction.category ? transaction.category : 'Other',
               user: user._id,
-              color: CategoryColor[randomEnumValue].toString()
+              color: generateRandomColor()
             }).save().then(category => {
               return category;
             })
@@ -78,14 +76,10 @@ router.post('/update', auth, (req, res) => {
       if (category) {
         return category;
       } else if (transaction.category) {
-        const enumValues = Object.keys(CategoryColor)
-          .map(n => Number.parseInt(n))
-        const randomIndex = Math.floor(Math.random() * enumValues.length / 2)
-        const randomEnumValue = enumValues[randomIndex]
         return new Category({
           name: transaction.category.name,
           user: user.id,
-          color: CategoryColor[randomEnumValue].toString()
+          color: generateRandomColor()
         }).save()
           .then(category => {
             return category;
