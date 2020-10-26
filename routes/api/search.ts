@@ -6,7 +6,7 @@ import {ITransaction} from "../../types/interfaces/ITransaction";
 
 const router = Router();
 
-router.post('/bycategory', auth, (req, res) => {
+router.post('/by-category', auth, (req, res) => {
   const {searchText, user} = req.body;
 
   Category.findOne({$text: {$search: searchText}, user: user.id})

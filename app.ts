@@ -9,7 +9,7 @@ import userRoutes from './routes/api/user';
 import transactionRoutes from './routes/api/transaction';
 import forgotPasswordRoutes from './routes/api/forgotPassword'
 import passwordRecoveryRoutes from './routes/api/passwordRecovery'
-import SearchRoutes from './routes/api/search'
+import searchRoutes from './routes/api/search'
 
 export const authRoute = '/api/auth/';
 export const registerRoute = '/api/register/';
@@ -17,7 +17,7 @@ export const userRoute = '/api/user/';
 export const transactionRoute = '/api/transaction/';
 export const forgotPasswordRoute ='/forgot_password/';
 export const passwordRecoveryRoute ='/';
-export const SearchRoute ='/api/search';
+export const searchRoute ='/api/search';
 
 const app = express();
 
@@ -43,6 +43,6 @@ app.use(userRoute, userRoutes);
 app.use(transactionRoute, transactionRoutes);
 app.use(forgotPasswordRoute, forgotPasswordRoutes);
 app.use(passwordRecoveryRoute, passwordRecoveryRoutes);
-app.use(SearchRoute, SearchRoutes);
+app.use(searchRoute, searchRoutes);
 
 export default app;
