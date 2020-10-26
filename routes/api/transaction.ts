@@ -3,7 +3,6 @@ import Transaction from "../../models/Transaction";
 import Category from "../../models/Category";
 import auth from "../../middleware/auth";
 import User from "../../models/User";
-import {CategoryColor} from "../../types/enums/CategoryColor";
 import socket from '../../webSocketServer'
 import {ITransaction} from "../../types/interfaces/ITransaction";
 import {ICategory} from "../../types/interfaces/ICategory";
@@ -50,16 +49,12 @@ router.post('/new', auth, (req, res) => {
 
 router.get('/get', auth, (req, res) => {
   const {user} = req.body;
-  var d = new Date(),
-    month = d.getMonth(),
-    year = d.getFullYear();
   Transaction.find({
     user: user.id,
-    created: {$lt: new Date(), $gt: new Date(year, month)}
   }).sort({
     created: 1
-  }).populate('category').then((transactions: ITransaction[]) => {
-    res.status(200).json(transactions);
+  }).then((transactions: ITransaction[]) => {
+    res.json(transactions)
   }).catch((err: any) => {
     console.error(err);
   })

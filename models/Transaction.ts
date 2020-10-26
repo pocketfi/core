@@ -38,6 +38,15 @@ const TransactionSchema = new Schema({
   },
 );
 
+TransactionSchema.pre('find', function() {
+  this.populate('category');
+});
+
+TransactionSchema.index({
+  place: 'text',
+  description: 'text'
+})
+
 TransactionSchema.set('toJSON', {
   virtuals: true,
   versionKey: false,
