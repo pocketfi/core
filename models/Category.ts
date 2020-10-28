@@ -16,10 +16,6 @@ const CategorySchema = new Schema({
   }
 });
 
-CategorySchema.index({
-  name: 'text'
-})
-
 CategorySchema.set('toJSON', {
   virtuals: true,
   versionKey: false,

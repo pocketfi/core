@@ -8,12 +8,24 @@ const router = Router();
 
 router.post('/by-category', auth, (req, res) => {
   const {searchText, user} = req.body;
+  let foundTransactions: ITransaction[] = []
 
-  Category.findOne({$text: {$search: searchText}, user: user.id})
-    .then(category => {
-      if (category) {
-        Transaction.find({category: category._id, user: user.id})
-          .then((transactions: ITransaction[]) =>  res.json(transactions))
+  Category.find({name: {$regex: searchText, $options: 'i'}, user: user.id})
+    .then(categories => {
+      if (categories.length) {
+        categories.forEach(category => {
+          Transaction.find({category: category._id, user: user.id})
+            .then((transactions: ITransaction[]) => {
+              if (transactions) {
+                transactions.forEach(transaction => {
+                  foundTransactions.push(transaction)
+                })
+              }
+              return foundTransactions
+            })
+            .then(transactions => res.json(transactions))
+            .catch(err => res.status(400))
+        })
       } else res.json({msg: "category not found"})
     })
 })
@@ -21,8 +33,24 @@ router.post('/by-category', auth, (req, res) => {
 router.post('/transaction', auth, (req, res) => {
   const {searchText, user} = req.body;
 
-  Transaction.find({$text: {$search: searchText}, user: user.id})
-    .then((transactions: ITransaction[]) => res.json(transactions))
+  Transaction.find({
+    $or: [{
+      place: {
+        $regex: searchText,
+        $options: 'i'
+      }
+    }, {
+      description: {
+        $regex: searchText,
+        $options: 'i'
+      }
+    }], user: user.id
+  })
+    .then((transactions: ITransaction[]) => {
+      if (transactions.length) {
+        res.json(transactions)
+      } else res.json({msg: 'transactions not found'})
+    })
     .catch(e => console.error(e))
 })
 
