@@ -51,9 +51,8 @@ router.post('/category', auth, (req, res) => {
   const {category, user} = req.body;
 
   Category.find({name:  {$regex: category, $options: 'i'}, user: user.id})
-    .then(foundCategories => {
-      if (foundCategories.length) {
-        let categories = foundCategories.map(category => category.name)
+    .then(categories => {
+      if (categories.length) {
         res.json(categories)
       } else res.json({msg: "category not found"})
     })
