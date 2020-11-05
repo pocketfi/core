@@ -35,5 +35,28 @@ router.post('/transaction', auth, (req, res) => {
     })
 })
 
+router.post('/place', auth, (req, res) => {
+  const {place, user} = req.body;
+
+  Transaction.find({place: {$regex: place, $options: 'i'}, user: user.id})
+    .then((transactions: ITransaction[]) => {
+      if (transactions.length) {
+        let places = transactions.map(t => t.place)
+        res.json(places)
+      } else res.status(400)
+    }).catch(e => console.error(e))
+})
+
+router.post('/category', auth, (req, res) => {
+  const {category, user} = req.body;
+
+  Category.find({name:  {$regex: category, $options: 'i'}, user: user.id})
+    .then(foundCategories => {
+      if (foundCategories.length) {
+        let categories = foundCategories.map(category => category.name)
+        res.json(categories)
+      } else res.json({msg: "category not found"})
+    })
+})
 
 export default router;
