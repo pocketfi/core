@@ -1,5 +1,5 @@
-import {model, Schema} from 'mongoose';
-import {IUser} from "../types/interfaces/IUser";
+import {model, Schema} from 'mongoose'
+import {IUser} from '../types/interfaces/IUser'
 
 const UserSchema = new Schema({
   name: {
@@ -24,17 +24,17 @@ const UserSchema = new Schema({
   resetPasswordExpires: {
     type: Date,
   }
-});
+})
 
 UserSchema.set('toJSON', {
   virtuals: true,
   versionKey: false,
   transform: (doc, ret) => {
-    ret.id = ret._id;
+    ret.id = ret._id
     delete ret._id
   }
-});
+})
 
-const User = model<IUser>('user', UserSchema);
+const User = model<IUser>('user', UserSchema)
 
-export default User;
+export default User

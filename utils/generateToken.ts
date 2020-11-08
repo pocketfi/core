@@ -1,9 +1,9 @@
-import jwt from "jsonwebtoken";
-import config from "../config";
+import jwt from 'jsonwebtoken'
+import config from '../config'
 
 export const generateToken = (id: string) => {
   return jwt.sign(
     {id: id},
     config.JWT_SECRET
-  );
-};
+  )
+}

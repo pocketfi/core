@@ -1,18 +1,18 @@
 import config from '../config'
-import User from '../models/User';
-import app, {registerRoute, transactionRoute} from "../app";
+import User from '../models/User'
+import app, {registerRoute, transactionRoute} from '../app'
 import request from 'supertest'
-import Transaction from "../models/Transaction";
-import {TransactionType} from "../types/enums/TransactionType";
-import Category from "../models/Category";
+import Transaction from '../models/Transaction'
+import {TransactionType} from '../types/enums/TransactionType'
+import Category from '../models/Category'
 
-const http = request(app);
+const http = request(app)
 
 const user = new User({
   name: 'name',
   email: 'new@mail.com',
   password: 'password'
-});
+})
 
 const transaction = {
   transactionType: TransactionType.EXPENSE,
@@ -31,7 +31,7 @@ const newTransaction = {
   description: 'Good dinner'
 }
 
-let token: string;
+let token: string
 
 describe('transactions test', () => {
 
@@ -44,10 +44,10 @@ describe('transactions test', () => {
         password: user.password
       })
       .end((err, response) => {
-        token = response.body.token;
-        done();
-      });
-  });
+        token = response.body.token
+        done()
+      })
+  })
 
   afterAll(done => {
     User.deleteMany({}).then(done)
@@ -56,11 +56,11 @@ describe('transactions test', () => {
   afterEach(done => {
     Transaction.deleteMany({}).then(done)
     Category.deleteMany({}).then(done)
-  });
+  })
 
   it('should use test database', () => {
-    expect(config.MONGO_URI).toBe(process.env.MONGO_URI_TEST);
-  });
+    expect(config.MONGO_URI).toBe(process.env.MONGO_URI_TEST)
+  })
 
   it('should create new transaction', done => {
     http
@@ -69,22 +69,22 @@ describe('transactions test', () => {
       .send({transaction})
       .expect(200)
       .end((err, res) => {
-        expect(res.body.id).toEqual(jasmine.any(String));
-        expect(res.body.transactionType).toEqual(transaction.transactionType);
-        expect(res.body.currency).toEqual(transaction.currency);
-        expect(res.body.category.name).toEqual(transaction.category);
-        expect(res.body.place).toEqual(transaction.place);
-        expect(res.body.price).toEqual(transaction.price);
-        done();
-      });
-  });
+        expect(res.body.id).toEqual(jasmine.any(String))
+        expect(res.body.transactionType).toEqual(transaction.transactionType)
+        expect(res.body.currency).toEqual(transaction.currency)
+        expect(res.body.category.name).toEqual(transaction.category)
+        expect(res.body.place).toEqual(transaction.place)
+        expect(res.body.price).toEqual(transaction.price)
+        done()
+      })
+  })
 
   it('should not create new transaction without token', done => {
     http
       .post(transactionRoute + '/new')
       .send({transaction})
       .expect(401, done)
-  });
+  })
 
   it('should get user transactions', done => {
     http
@@ -92,16 +92,16 @@ describe('transactions test', () => {
       .set('x-auth-token', token)
       .expect(200)
       .end((err, res) => {
-        expect(res.body).toEqual(jasmine.any(Array));
-        done();
-      });
-  });
+        expect(res.body).toEqual(jasmine.any(Array))
+        done()
+      })
+  })
 
   it('should not get transactions without token', done => {
     http
       .get(transactionRoute + '/get')
       .expect(401, done)
-  });
+  })
 
   it('should update transaction', done => {
     http
@@ -126,15 +126,15 @@ describe('transactions test', () => {
             }
           }).expect(200)
           .end((err, res) => {
-            expect(res.body.id).toEqual(res.body.id);
-            expect(res.body.category.name).toEqual(newTransaction.category);
-            expect(res.body.place).toEqual(newTransaction.place);
-            expect(res.body.price).toEqual(newTransaction.price);
-            expect(res.body.description).toEqual(newTransaction.description);
-            done();
-          });
-      });
-  });
+            expect(res.body.id).toEqual(res.body.id)
+            expect(res.body.category.name).toEqual(newTransaction.category)
+            expect(res.body.place).toEqual(newTransaction.place)
+            expect(res.body.price).toEqual(newTransaction.price)
+            expect(res.body.description).toEqual(newTransaction.description)
+            done()
+          })
+      })
+  })
 
   it('should not update transaction without token', done => {
     http
@@ -157,8 +157,8 @@ describe('transactions test', () => {
               description: newTransaction.description
             }
           }).expect(401, done)
-      });
-  });
+      })
+  })
 
   it('should delete transaction', done => {
     http

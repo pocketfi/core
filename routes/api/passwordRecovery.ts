@@ -1,9 +1,9 @@
-import {Router} from 'express';
-import User from "../../models/User";
-import {IUser} from "../../types/interfaces/IUser";
-import bcrypt from "bcryptjs";
+import {Router} from 'express'
+import User from '../../models/User'
+import {IUser} from '../../types/interfaces/IUser'
+import bcrypt from 'bcryptjs'
 
-const router = Router();
+const router = Router()
 
 router.get('/reset', (req, res) => {
   User.findOne({
@@ -22,18 +22,18 @@ router.get('/reset', (req, res) => {
 })
 
 router.put('/updatePassword', (req, res) => {
-  const {email} = req.body;
+  const {email} = req.body
   User.findOne({email}).then(user => {
     if (user) {
       bcrypt.genSalt(10).then(salt => {
         bcrypt.hash(req.body.password, salt).then(hash => {
-          User.findOneAndUpdate({"_id": user.id}, {
+          User.findOneAndUpdate({'_id': user.id}, {
             password: hash,
             resetPasswordToken: null,
             resetPasswordExpires: null
           }, {new: true}).then(user => {
             res.status(200).send({updated: true})
-          });
+          })
         })
       })
     } else {
@@ -42,6 +42,6 @@ router.put('/updatePassword', (req, res) => {
   })
 })
 
-export default router;
+export default router
 
 

@@ -1,21 +1,21 @@
-import {Router} from "express";
-import Transaction from "../../models/Transaction";
-import Category from "../../models/Category";
-import auth from "../../middleware/auth";
-import User from "../../models/User";
+import {Router} from 'express'
+import Transaction from '../../models/Transaction'
+import Category from '../../models/Category'
+import auth from '../../middleware/auth'
+import User from '../../models/User'
 import socket from '../../webSocketServer'
-import {ITransaction} from "../../types/interfaces/ITransaction";
-import {ICategory} from "../../types/interfaces/ICategory";
-import {generateRandomColor} from "../../utils/generateRandomColor";
+import {ITransaction} from '../../types/interfaces/ITransaction'
+import {ICategory} from '../../types/interfaces/ICategory'
+import {generateRandomColor} from '../../utils/generateRandomColor'
 
-const router = Router();
+const router = Router()
 
 router.post('/new', auth, (req, res) => {
-  const {transaction, user} = req.body;
+  const {transaction, user} = req.body
 
   User.findById(user.id)
     .then(user => {
-      if (!user) res.status(400).json({err: 'user does not exist'});
+      if (!user) res.status(400).json({err: 'user does not exist'})
       Category.findOne({name: transaction.category ? transaction.category : 'Other', user: user._id})
         .then(transactionCategory => {
           if (!transactionCategory) {
@@ -24,7 +24,7 @@ router.post('/new', auth, (req, res) => {
               user: user._id,
               color: generateRandomColor()
             }).save().then(category => {
-              return category;
+              return category
             })
           } else return transactionCategory
         }).then(category => {
@@ -36,19 +36,19 @@ router.post('/new', auth, (req, res) => {
           place: transaction.place,
           price: transaction.price,
           currency: transaction.currency
-        });
+        })
 
         newTransaction.save().then((transaction: ITransaction) => {
-          if (!transaction) res.status(400);
-          socket.emit('new', newTransaction);
-          res.json(transaction);
+          if (!transaction) res.status(400)
+          socket.emit('new', newTransaction)
+          res.json(transaction)
         })
-      });
-    });
-});
+      })
+    })
+})
 
 router.get('/get', auth, (req, res) => {
-  const {user} = req.body;
+  const {user} = req.body
   Transaction.find({
     user: user.id,
   }).sort({
@@ -56,20 +56,20 @@ router.get('/get', auth, (req, res) => {
   }).then((transactions: ITransaction[]) => {
     res.json(transactions)
   }).catch((err: any) => {
-    console.error(err);
+    console.error(err)
   })
 })
 
 router.post('/update', auth, (req, res) => {
-  const {transaction, user} = req.body;
+  const {transaction, user} = req.body
   User.findById(user.id).then(user => {
-    if (!user) res.status(400).json({err: 'user does not exist'});
+    if (!user) res.status(400).json({err: 'user does not exist'})
   })
 
   Category.findOne({name: transaction.category.name, user: user.id})
     .then(category => {
       if (category) {
-        return category;
+        return category
       } else if (transaction.category) {
         return new Category({
           name: transaction.category.name,
@@ -77,18 +77,18 @@ router.post('/update', auth, (req, res) => {
           color: generateRandomColor()
         }).save()
           .then(category => {
-            return category;
+            return category
           })
       }
     }).then((category: ICategory) => {
     if (category) {
-      category.name = transaction.category.name;
-      category.color = transaction.category.color;
+      category.name = transaction.category.name
+      category.color = transaction.category.color
     }
 
     category.save((err: any, category: ICategory) => {
-      if (err) res.status(500);
-      Transaction.findOneAndUpdate({"_id": transaction.id},
+      if (err) res.status(500)
+      Transaction.findOneAndUpdate({'_id': transaction.id},
         {
           transactionType: transaction.transactionType,
           category,
@@ -99,12 +99,12 @@ router.post('/update', auth, (req, res) => {
           description: transaction.description
         }, {new: true}).then((transaction) => {
         if (transaction) {
-          transaction.category = category;
-          res.status(200).json(transaction);
+          transaction.category = category
+          res.status(200).json(transaction)
         } else {
-          res.status(500);
+          res.status(500)
         }
-      });
+      })
     })
   })
 })
@@ -118,4 +118,4 @@ router.delete('/delete/:id', auth, (req, res) => {
   )
 })
 
-export default router;
+export default router
