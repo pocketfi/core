@@ -15,9 +15,9 @@ export const authRoute = '/api/auth/';
 export const registerRoute = '/api/register/';
 export const userRoute = '/api/user/';
 export const transactionRoute = '/api/transaction/';
-export const forgotPasswordRoute ='/forgot_password/';
-export const passwordRecoveryRoute ='/';
-export const searchRoute ='/api/search';
+export const forgotPasswordRoute = '/forgot_password/';
+export const passwordRecoveryRoute = '/';
+export const searchRoute = '/api/search';
 
 const app = express();
 
@@ -28,14 +28,14 @@ app.use(express.json());
 mongoose.set('useFindAndModify', false);
 
 mongoose
-    .connect(config.MONGO_URI, {
-        useNewUrlParser: true,
-        useCreateIndex: true,
-        useUnifiedTopology: true,
-        useFindAndModify: false,
-    })
-    .then(() => console.log(`MongoDB Connected on ${config.MONGO_URI}`))
-    .catch(err => console.log(err));
+  .connect(config.MONGO_URI, {
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false,
+  })
+  .then(() => console.log(`MongoDB Connected on ${config.MONGO_URI}`))
+  .catch(err => console.log(err));
 
 app.use(registerRoute, registerRoutes);
 app.use(authRoute, authRoutes);

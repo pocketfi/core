@@ -50,7 +50,7 @@ router.post('/place', auth, (req, res) => {
 router.post('/category', auth, (req, res) => {
   const {category, user} = req.body;
 
-  Category.find({name:  {$regex: category, $options: 'i'}, user: user.id})
+  Category.find({name: {$regex: category, $options: 'i'}, user: user.id})
     .then(categories => {
       if (categories.length) {
         res.json(categories)

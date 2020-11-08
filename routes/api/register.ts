@@ -28,7 +28,7 @@ router.post('/', (req, res) => {
         if (err) throw err;
         newUser.password = hash;
         newUser.save()
-          .then((user:IUser) => {
+          .then((user: IUser) => {
             const token = generateToken(user.id);
             res.json({
               token,

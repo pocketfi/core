@@ -118,7 +118,8 @@ describe('transactions test', () => {
               category: {
                 id: res.body.category.id,
                 name: newTransaction.category,
-                user: res.body.user},
+                user: res.body.user
+              },
               place: newTransaction.place,
               price: newTransaction.price,
               description: newTransaction.description
@@ -149,7 +150,8 @@ describe('transactions test', () => {
               category: {
                 id: res.body.category.id,
                 name: newTransaction.category,
-                user: res.body.user},
+                user: res.body.user
+              },
               place: newTransaction.place,
               price: newTransaction.price,
               description: newTransaction.description

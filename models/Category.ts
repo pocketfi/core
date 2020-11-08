@@ -1,6 +1,6 @@
-import {Schema, model} from 'mongoose';
+import * as mongoose from 'mongoose';
+import {model, Schema} from 'mongoose';
 import {ICategory} from "../types/interfaces/ICategory";
-import * as mongoose from "mongoose";
 
 const CategorySchema = new Schema({
   user: {

@@ -5,7 +5,7 @@ import bcrypt from "bcryptjs";
 
 const router = Router();
 
-router.get('/reset', (req, res)=> {
+router.get('/reset', (req, res) => {
   User.findOne({
     resetPasswordToken: req.query.resetPasswordToken.toString(),
     resetPasswordExpires: {$gt: new Date()}

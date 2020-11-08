@@ -1,6 +1,6 @@
-import {Schema, model} from 'mongoose';
+import * as mongoose from 'mongoose';
+import {model, Schema} from 'mongoose';
 import {ITransaction} from "../types/interfaces/ITransaction";
-import * as mongoose from "mongoose";
 
 const TransactionSchema = new Schema({
     user: {
@@ -38,7 +38,7 @@ const TransactionSchema = new Schema({
   },
 );
 
-TransactionSchema.pre('find', function() {
+TransactionSchema.pre('find', function () {
   this.populate('category');
 });
 

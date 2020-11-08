@@ -2,9 +2,9 @@ import {Router} from 'express';
 import User from '../../models/User';
 import {generateToken} from "../../utils/generateToken";
 import nodemailer, {SentMessageInfo} from 'nodemailer'
+import config from './../../config'
 
 const router = Router();
-import config from './../../config'
 
 const {EMAIL_ADDRESS, EMAIL_PASSWORD, HOST, CLIENT_PORT} = config
 
