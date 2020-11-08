@@ -1,6 +1,6 @@
-import * as mongoose from 'mongoose';
-import {model, Schema} from 'mongoose';
-import {ICategory} from "../types/interfaces/ICategory";
+import * as mongoose from 'mongoose'
+import {model, Schema} from 'mongoose'
+import {ICategory} from '../types/interfaces/ICategory'
 
 const CategorySchema = new Schema({
   user: {
@@ -14,17 +14,17 @@ const CategorySchema = new Schema({
   color: {
     type: String
   }
-});
+})
 
 CategorySchema.set('toJSON', {
   virtuals: true,
   versionKey: false,
   transform: (doc, ret) => {
-    ret.id = ret._id;
+    ret.id = ret._id
     delete ret._id
   }
-});
+})
 
-const Category = model<ICategory>('category', CategorySchema);
+const Category = model<ICategory>('category', CategorySchema)
 
-export default Category;
+export default Category

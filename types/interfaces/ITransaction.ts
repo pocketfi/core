@@ -1,5 +1,5 @@
-import {Document} from 'mongoose';
-import {ICategory} from "./ICategory";
+import {Document} from 'mongoose'
+import {ICategory} from './ICategory'
 
 export interface ITransaction extends Document {
   id: string,

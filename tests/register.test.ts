@@ -1,31 +1,31 @@
 import config from '../config'
-import User from '../models/User';
+import User from '../models/User'
 import request from 'supertest'
-import app, {registerRoute} from "../app";
+import app, {registerRoute} from '../app'
 
-const http = request(app);
+const http = request(app)
 
 const user = new User({
   name: 'name',
   email: 'email@mail.com',
   password: 'password'
-});
+})
 
 describe('registration test', () => {
 
   beforeAll(done => {
-    done();
-  });
+    done()
+  })
 
   afterEach(done => {
     User
       .deleteMany({})
-      .then(done);
-  });
+      .then(done)
+  })
 
   it('should use test database', () => {
-    expect(config.MONGO_URI).toBe(process.env.MONGO_URI_TEST);
-  });
+    expect(config.MONGO_URI).toBe(process.env.MONGO_URI_TEST)
+  })
 
   it('should register user', done => {
     http
@@ -37,16 +37,16 @@ describe('registration test', () => {
       })
       .expect(200)
       .end((err, res) => {
-        const {id, password, email, name} = res.body.user;
+        const {id, password, email, name} = res.body.user
 
-        expect(res.body.token).toEqual(jasmine.any(String));
-        expect(name).toEqual(user.name);
-        expect(email).toEqual(user.email);
-        expect(password).toBeUndefined();
+        expect(res.body.token).toEqual(jasmine.any(String))
+        expect(name).toEqual(user.name)
+        expect(email).toEqual(user.email)
+        expect(password).toBeUndefined()
 
-        done();
-      });
-  });
+        done()
+      })
+  })
 
   it('should not register user with already used email', done => {
     http
@@ -63,9 +63,9 @@ describe('registration test', () => {
             email: user.email,
             password: ''
           })
-          .expect(400, done);
-      });
-  });
+          .expect(400, done)
+      })
+  })
 
   it('should not register user without name', done => {
     http
@@ -74,8 +74,8 @@ describe('registration test', () => {
         email: user.email,
         password: user.password
       })
-      .expect(400, done);
-  });
+      .expect(400, done)
+  })
 
   it('should not register user without email', done => {
     http
@@ -84,8 +84,8 @@ describe('registration test', () => {
         name: user.name,
         password: user.password
       })
-      .expect(400, done);
-  });
+      .expect(400, done)
+  })
 
   it('should not register user without password', done => {
     http
@@ -94,13 +94,13 @@ describe('registration test', () => {
         name: user.name,
         email: user.email
       })
-      .expect(400, done);
-  });
+      .expect(400, done)
+  })
 
   it('should not register not provided user', done => {
     http
       .post(registerRoute)
       .send(null)
-      .expect(400, done);
-  });
-});
+      .expect(400, done)
+  })
+})

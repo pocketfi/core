@@ -1,6 +1,6 @@
-import * as mongoose from 'mongoose';
-import {model, Schema} from 'mongoose';
-import {ITransaction} from "../types/interfaces/ITransaction";
+import * as mongoose from 'mongoose'
+import {model, Schema} from 'mongoose'
+import {ITransaction} from '../types/interfaces/ITransaction'
 
 const TransactionSchema = new Schema({
     user: {
@@ -36,21 +36,21 @@ const TransactionSchema = new Schema({
     }
 
   },
-);
+)
 
 TransactionSchema.pre('find', function () {
-  this.populate('category');
-});
+  this.populate('category')
+})
 
 TransactionSchema.set('toJSON', {
   virtuals: true,
   versionKey: false,
   transform: (doc, ret) => {
-    ret.id = ret._id;
+    ret.id = ret._id
     delete ret._id
   }
-});
+})
 
-const Transaction = model<ITransaction>('transaction', TransactionSchema);
+const Transaction = model<ITransaction>('transaction', TransactionSchema)
 
-export default Transaction;
+export default Transaction

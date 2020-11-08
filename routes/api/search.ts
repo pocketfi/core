@@ -1,10 +1,10 @@
-import {Router} from 'express';
-import auth from "../../middleware/auth";
-import Transaction from "../../models/Transaction";
-import Category from "../../models/Category";
-import {ITransaction} from "../../types/interfaces/ITransaction";
+import {Router} from 'express'
+import auth from '../../middleware/auth'
+import Transaction from '../../models/Transaction'
+import Category from '../../models/Category'
+import {ITransaction} from '../../types/interfaces/ITransaction'
 
-const router = Router();
+const router = Router()
 
 router.post('/transaction', auth, (req, res) => {
   const {searchText, transactionType, category, place, dateRange, user, page, size, sort} = req.body
@@ -36,7 +36,7 @@ router.post('/transaction', auth, (req, res) => {
 })
 
 router.post('/place', auth, (req, res) => {
-  const {place, user} = req.body;
+  const {place, user} = req.body
 
   Transaction.find({place: {$regex: place, $options: 'i'}, user: user.id})
     .then((transactions: ITransaction[]) => {
@@ -48,14 +48,14 @@ router.post('/place', auth, (req, res) => {
 })
 
 router.post('/category', auth, (req, res) => {
-  const {category, user} = req.body;
+  const {category, user} = req.body
 
   Category.find({name: {$regex: category, $options: 'i'}, user: user.id})
     .then(categories => {
       if (categories.length) {
         res.json(categories)
-      } else res.json({msg: "category not found"})
+      } else res.json({msg: 'category not found'})
     })
 })
 
-export default router;
+export default router

@@ -1,6 +1,6 @@
-import {config} from "dotenv";
+import {config} from 'dotenv'
 
-config();
+config()
 
 export default {
   PORT: process.env.PORT,
@@ -12,4 +12,4 @@ export default {
   JWT_SECRET: process.env.JWT_SECRET,
   EMAIL_ADDRESS: process.env.EMAIL_ADDRESS,
   EMAIL_PASSWORD: process.env.EMAIL_PASSWORD
-};
+}

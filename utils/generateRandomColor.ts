@@ -1,4 +1,4 @@
-import {CategoryColor} from "../types/enums/CategoryColor";
+import {CategoryColor} from '../types/enums/CategoryColor'
 
 export const generateRandomColor = () => {
   const enumValues = Object.keys(CategoryColor)
