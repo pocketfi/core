@@ -7,16 +7,17 @@ import socket from '../../webSocketServer'
 import {ITransaction} from '../../types/interfaces/ITransaction'
 import {ICategory} from '../../types/interfaces/ICategory'
 import {generateRandomColor} from '../../utils/generateRandomColor'
+import {IUser} from '../../types/interfaces/IUser'
 
 const router = Router()
 
 router.post('/new', auth, (req, res) => {
   const {transaction, user} = req.body
   User.findById(user.id)
-    .then(user => {
+    .then((user: IUser) => {
       if (!user) res.status(400).json({err: 'user does not exist'})
       Category.findOne({name: transaction.category, user: user._id})
-        .then(category => {
+        .then((category: ICategory) => {
           if (!category) {
             return new Category({
               name: transaction.category ? transaction.category : 'Other',
@@ -26,7 +27,7 @@ router.post('/new', auth, (req, res) => {
               return category
             })
           } else return category
-        }).then(category => {
+        }).then((category: ICategory) => {
         const newTransaction = new Transaction({
           user: user._id,
           transactionType: transaction.transactionType,
@@ -60,12 +61,12 @@ router.get('/get', auth, (req, res) => {
 
 router.post('/update', auth, (req, res) => {
   const {transaction, user} = req.body
-  User.findById(user.id).then(user => {
+  User.findById(user.id).then((user: IUser) => {
     if (!user) res.status(400).json({err: 'user does not exist'})
   })
 
   Category.findOne({name: transaction.category.name, user: user.id})
-    .then(category => {
+    .then((category: ICategory) => {
       if (category) {
         return category
       } else if (transaction.category) {
@@ -74,7 +75,7 @@ router.post('/update', auth, (req, res) => {
           user: user.id,
           color: generateRandomColor()
         }).save()
-          .then(category => {
+          .then((category: ICategory) => {
             return category
           })
       }
@@ -95,7 +96,7 @@ router.post('/update', auth, (req, res) => {
           currency: transaction.currency,
           created: transaction.created,
           description: transaction.description
-        }, {new: true}).then((transaction) => {
+        }, {new: true}).then((transaction: ITransaction) => {
         if (transaction) {
           transaction.category = category
           res.status(200).json(transaction)
