@@ -12,13 +12,12 @@ const router = Router()
 
 router.post('/new', auth, (req, res) => {
   const {transaction, user} = req.body
-
   User.findById(user.id)
     .then(user => {
       if (!user) res.status(400).json({err: 'user does not exist'})
-      Category.findOne({name: transaction.category ? transaction.category : 'Other', user: user._id})
-        .then(transactionCategory => {
-          if (!transactionCategory) {
+      Category.findOne({name: transaction.category, user: user._id})
+        .then(category => {
+          if (!category) {
             return new Category({
               name: transaction.category ? transaction.category : 'Other',
               user: user._id,
@@ -26,9 +25,8 @@ router.post('/new', auth, (req, res) => {
             }).save().then(category => {
               return category
             })
-          } else return transactionCategory
+          } else return category
         }).then(category => {
-
         const newTransaction = new Transaction({
           user: user._id,
           transactionType: transaction.transactionType,

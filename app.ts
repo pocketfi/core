@@ -17,7 +17,7 @@ export const userRoute = '/api/user/'
 export const transactionRoute = '/api/transaction/'
 export const forgotPasswordRoute = '/forgot_password/'
 export const passwordRecoveryRoute = '/'
-export const searchRoute = '/api/search'
+export const searchRoute = '/api/search/'
 
 const app = express()
 

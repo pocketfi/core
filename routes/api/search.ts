@@ -7,9 +7,8 @@ import {ITransaction} from '../../types/interfaces/ITransaction'
 const router = Router()
 
 router.post('/transaction', auth, (req, res) => {
-  const {searchText, transactionType, category, place, dateRange, user, page, size, sort} = req.body
-
-  Category.findOne({name: category, user: user.id})
+  const {searchText, transactionType, categoryName, place, dateRange, user, page, size, sort} = req.body
+  Category.findOne({name: categoryName, user: user.id})
     .then(category => {
       Transaction.find({
         $and: [{
@@ -30,7 +29,7 @@ router.post('/transaction', auth, (req, res) => {
         .then((transactions: ITransaction[]) => {
           if (transactions.length) {
             res.json(transactions)
-          } else res.json({msg: 'transactions not found'})
+          } else res.status(400)
         }).catch(e => console.error(e))
     })
 })
@@ -54,7 +53,7 @@ router.post('/category', auth, (req, res) => {
     .then(categories => {
       if (categories.length) {
         res.json(categories)
-      } else res.json({msg: 'category not found'})
+      } else res.status(400)
     })
 })
 

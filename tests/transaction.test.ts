@@ -64,7 +64,7 @@ describe('transactions test', () => {
 
   it('should create new transaction', done => {
     http
-      .post(transactionRoute + '/new')
+      .post(`${transactionRoute}new`)
       .set('x-auth-token', token)
       .send({transaction})
       .expect(200)
@@ -81,14 +81,14 @@ describe('transactions test', () => {
 
   it('should not create new transaction without token', done => {
     http
-      .post(transactionRoute + '/new')
+      .post(`${transactionRoute}new`)
       .send({transaction})
       .expect(401, done)
   })
 
   it('should get user transactions', done => {
     http
-      .get(transactionRoute + '/get')
+      .get(`${transactionRoute}get`)
       .set('x-auth-token', token)
       .expect(200)
       .end((err, res) => {
@@ -99,18 +99,18 @@ describe('transactions test', () => {
 
   it('should not get transactions without token', done => {
     http
-      .get(transactionRoute + '/get')
+      .get(`${transactionRoute}get`)
       .expect(401, done)
   })
 
   it('should update transaction', done => {
     http
-      .post(transactionRoute + '/new')
+      .post(`${transactionRoute}new`)
       .set('x-auth-token', token)
       .send({transaction})
       .end((err, res) => {
         http
-          .post(transactionRoute + '/update')
+          .post(`${transactionRoute}update`)
           .set('x-auth-token', token)
           .send({
             transaction: {
@@ -138,12 +138,12 @@ describe('transactions test', () => {
 
   it('should not update transaction without token', done => {
     http
-      .post(transactionRoute + '/new')
+      .post(`${transactionRoute}new`)
       .set('x-auth-token', token)
       .send({transaction})
       .end((err, res) => {
         http
-          .post(transactionRoute + '/update')
+          .post(`${transactionRoute}update`)
           .send({
             transaction: {
               id: res.body.id,
@@ -162,12 +162,12 @@ describe('transactions test', () => {
 
   it('should delete transaction', done => {
     http
-      .post(transactionRoute + '/new')
+      .post(`${transactionRoute}new`)
       .set('x-auth-token', token)
       .send({transaction})
       .end((err, res) => {
         http
-          .delete(transactionRoute + '/delete/' + res.body.id)
+          .delete(`${transactionRoute}delete/${res.body.id}`)
           .set('x-auth-token', token)
           .expect(200)
           .end((error, response) => {
@@ -179,12 +179,12 @@ describe('transactions test', () => {
 
   it('should not delete transaction without token', done => {
     http
-      .post(transactionRoute + '/new')
+      .post(`${transactionRoute}new`)
       .set('x-auth-token', token)
       .send({transaction})
       .end((err, res) => {
         http
-          .delete(transactionRoute + '/delete/' + res.body.id)
+          .delete(`${transactionRoute}delete/${res.body.id}`)
           .expect(401, done)
       })
   })
