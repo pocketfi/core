@@ -3,6 +3,7 @@ import bcrypt from 'bcryptjs'
 import User from '../../models/User'
 import {google} from 'googleapis'
 import {generateToken} from '../../utils/generateToken'
+import {IUser} from '../../types/interfaces/IUser'
 
 const router = Router()
 
@@ -13,7 +14,7 @@ router.post('/', (req, res) => {
     return res.status(400).json({msg: 'Please enter all fields'})
   }
 
-  User.findOne({email}).then(user => {
+  User.findOne({email}).then((user: IUser) => {
     if (!user) return res.status(400).json({msg: 'User does not exist'})
 
     bcrypt.compare(password, user.password).then(isMatch => {
@@ -44,7 +45,7 @@ router.post('/google', (req, resp) => {
       return resp.status(400)
     } else {
       const {email, name} = res.data
-      User.findOne({email}).then(user => {
+      User.findOne({email}).then((user: IUser) => {
 
         if (!user) {
           user = new User({
