@@ -7,7 +7,7 @@ import {ITransaction} from '../../types/interfaces/ITransaction'
 const router = Router()
 
 router.post('/transaction', auth, (req, res) => {
-  const {searchText, transactionType, category, place, dateRange, user, page, size, sort} = req.body
+  const {searchText, transactionType, category, place, startDate, endDate, user, page, size, sort} = req.body
 
   Category.findOne({name: category, user: user.id})
     .then(category => {
@@ -21,7 +21,9 @@ router.post('/transaction', auth, (req, res) => {
         },
           {transactionType: transactionType ? transactionType : {$exists: true}},
           {place: place ? place : {$exists: true}},
-          {created: dateRange ? {$lt: dateRange.end, $gt: dateRange.start} : {$exists: true}},
+          {created: !startDate && endDate ? {$lt: endDate} : {$exists: true}},
+          {created: startDate && !endDate ? {$gt: startDate} : {$exists: true}},
+          {created: startDate && endDate ? {$lt: endDate, $gt: startDate} : {$exists: true}},
           {category: category ? category.id : {$exists: true}}
         ], user: user.id
       }).skip(page > 0 ? ((page - 1) * size) : 0)
