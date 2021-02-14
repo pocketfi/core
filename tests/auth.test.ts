@@ -30,10 +30,6 @@ describe('authentication test', () => {
       .then(done)
   })
 
-  it('should use test database', () => {
-    expect(config.MONGO_URI).toBe(process.env.MONGO_URI_TEST)
-  })
-
   it('should auth existing user', done => {
     http
       .post(authRoute)
