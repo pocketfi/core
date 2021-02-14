@@ -23,10 +23,6 @@ describe('registration test', () => {
       .then(done)
   })
 
-  it('should use test database', () => {
-    expect(config.MONGO_URI).toBe(process.env.MONGO_URI_TEST)
-  })
-
   it('should register user', done => {
     http
       .post(registerRoute)
