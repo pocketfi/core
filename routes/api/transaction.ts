@@ -111,7 +111,7 @@ router.post('/update', auth, (req, res) => {
 
 
 router.delete('/delete/:id', auth, (req, res) => {
-  Transaction.findByIdAndRemove(req.params.id, (err: any, transaction: ITransaction) => {
+  Transaction.findByIdAndRemove(req.params.id, {}, (err: any, transaction: ITransaction) => {
       if (err) res.status(500)
       res.status(200).json(transaction)
     }
