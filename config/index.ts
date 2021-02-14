@@ -1,9 +1,13 @@
 import {config} from 'dotenv'
+import * as fs from 'fs'
 
 if (!process.env.NODE_ENV) {
   throw new Error('No node environment specified. Provide NODE_ENV=[dev/test/prod] environment variable')
 } else {
-  config({path: `.env.${process.env.NODE_ENV}`})
+  const path = `.env.${process.env.NODE_ENV}`
+  if (fs.existsSync(path)) {
+    config({path: path})
+  }
 }
 
 export default {
