@@ -51,6 +51,6 @@ TransactionSchema.set('toJSON', {
   }
 })
 
-const Transaction = model<ITransaction>('transaction', TransactionSchema)
+export const Transaction = model<ITransaction>('transaction', TransactionSchema)
 
 export default Transaction

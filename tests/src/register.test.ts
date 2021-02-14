@@ -1,7 +1,6 @@
-import config from '../config'
-import User from '../models/User'
+import User from '../../models/User'
 import request from 'supertest'
-import app, {registerRoute} from '../app'
+import app, {registerRoute} from '../../app'
 
 const http = request(app)
 

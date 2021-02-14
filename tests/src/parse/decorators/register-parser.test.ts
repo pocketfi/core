@@ -1,6 +1,6 @@
-import {getParser, RegisterParser} from '../../../parse/decorators/RegisterParser'
-import {Parser} from '../../../parse/types/Parser'
-import {ParsedStatement} from '../../../parse/types/ParsedStatement'
+import {getParser, RegisterParser} from '../../../../parse/decorators/RegisterParser'
+import {Parser} from '../../../../parse/types/Parser'
+import {ParsedStatement} from '../../../../parse/types/ParsedStatement'
 
 describe('priorbank parser test', () => {
 

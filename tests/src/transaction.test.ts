@@ -1,10 +1,9 @@
-import config from '../config'
-import User from '../models/User'
-import app, {registerRoute, transactionRoute} from '../app'
+import User from '../../models/User'
+import app, {registerRoute, transactionRoute} from '../../app'
 import request from 'supertest'
-import Transaction from '../models/Transaction'
-import {TransactionType} from '../types/enums/TransactionType'
-import Category from '../models/Category'
+import Transaction from '../../models/Transaction'
+import {TransactionType} from '../../types/enums/TransactionType'
+import Category from '../../models/Category'
 
 const http = request(app)
 

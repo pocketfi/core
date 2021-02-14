@@ -5,6 +5,6 @@ export interface StatementInfo {
 
   issuer: Bank
   format: string
-  formatDetails: FormatDetails
+  formatDetails?: FormatDetails
 
 }
