@@ -1,4 +1,3 @@
-import config from '../config'
 import User from '../models/User'
 import request from 'supertest'
 import app, {authRoute, registerRoute} from '../app'
@@ -28,10 +27,6 @@ describe('authentication test', () => {
     User
       .deleteMany({})
       .then(done)
-  })
-
-  it('should use test database', () => {
-    expect(config.MONGO_URI).toBe(process.env.MONGO_URI_TEST)
   })
 
   it('should auth existing user', done => {

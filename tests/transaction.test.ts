@@ -1,4 +1,3 @@
-import config from '../config'
 import User from '../models/User'
 import app, {registerRoute, transactionRoute} from '../app'
 import request from 'supertest'
@@ -56,10 +55,6 @@ describe('transactions test', () => {
   afterEach(done => {
     Transaction.deleteMany({}).then(done)
     Category.deleteMany({}).then(done)
-  })
-
-  it('should use test database', () => {
-    expect(config.MONGO_URI).toBe(process.env.MONGO_URI_TEST)
   })
 
   it('should create new transaction', done => {
