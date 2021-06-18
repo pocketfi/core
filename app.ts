@@ -21,7 +21,15 @@ export const searchRoute = '/api/search'
 
 const app = express()
 
-app.use(cors())
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin) return callback(null, true);
+    if (origin === process.env.CLIENT_ORIGIN) {
+      return callback(new Error(`CORS policy origin mismatch, url: ${origin} is not allowed`), false);
+    }
+    return callback(null, true);
+  }
+}))
 app.use(morgan('dev'))
 app.use(express.json())
 
